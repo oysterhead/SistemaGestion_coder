@@ -53,11 +53,12 @@ namespace WinForms.ABMFormularios.Venta_Producto
         {
             string id = txtBuscarVenta.Text;
 
-            if (string.IsNullOrWhiteSpace(id))
+            if (!string.IsNullOrWhiteSpace(id))
             {
                 int Id = Convert.ToInt32(id);
                 Venta ventaBuscada = VentaService.ObtenerVentaPorId(Id);
-                this.ActualizarDgv(ventaBuscada);
+                List<Venta> ventas = new List<Venta> { ventaBuscada};
+                this.ActualizarDgv(ventas);
             }
 
             else { MessageBox.Show("Debe ingresar un Id de venta a buscar"); }
@@ -67,13 +68,16 @@ namespace WinForms.ABMFormularios.Venta_Producto
         private void btnEliminarVenta_Click(object sender, EventArgs e)
         {
             string id = txtBuscarVenta.Text;
-            if (string.IsNullOrWhiteSpace(id))
+            if (!string.IsNullOrWhiteSpace(id))
             {
                 int Id = Convert.ToInt32(id);
                 bool resultado = VentaService.EliminarVentaPorId(Id);
                 if (resultado)
                 {
                     MessageBox.Show($"Venta con ID {Id} eliminado.");
+                    List<Venta> listarVentas = VentaService.ListarTodasLasVentas();
+                    this.ActualizarDgv(listarVentas);
+
                 }
                 else { MessageBox.Show("Producto NO ELIMINADO."); }
             }
