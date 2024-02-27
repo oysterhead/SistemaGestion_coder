@@ -1,5 +1,6 @@
 using WinForms.ABMFormularios;
 using WinForms.ABMFormularios.Formularios_Producto;
+using WinForms.ABMFormularios.Formularios_ProdVend;
 using WinForms.ABMFormularios.Venta_Producto;
 
 namespace WinForms
@@ -33,6 +34,14 @@ namespace WinForms
             this.Hide();
             frmABMVenta frmABMVenta = new frmABMVenta();
             frmABMVenta.ShowDialog();
+            this.Show();
+        }
+
+        private void btnProductoVendido_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            ABMProductoVendido frmABMProductoVendido = new ABMProductoVendido();
+            frmABMProductoVendido.ShowDialog();
             this.Show();
         }
     }

@@ -72,6 +72,7 @@
             btnProductoVendido.TabIndex = 3;
             btnProductoVendido.Text = "Producto Vendido";
             btnProductoVendido.UseVisualStyleBackColor = true;
+            btnProductoVendido.Click += btnProductoVendido_Click;
             // 
             // Inicio
             // 
