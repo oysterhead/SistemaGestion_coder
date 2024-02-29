@@ -36,5 +36,15 @@ namespace WebApiSistemaGestion.Service
                 //ProductoVendido productoAEliminar = context.ProductoVendidos.Include(pv => pv.Ventas).Where(pv => pv.Id == Id);
             }
         }
+
+        public static ProductoVendido BuscarProductoVendidoPorId(int Id)
+        {
+            using(CoderContext context = new CoderContext())
+            {
+                ProductoVendido productoEncontrado = context.ProductoVendidos.Where(pv => pv.Id == Id).FirstOrDefault();
+
+                return productoEncontrado;
+            }
+        }
     }
 }
