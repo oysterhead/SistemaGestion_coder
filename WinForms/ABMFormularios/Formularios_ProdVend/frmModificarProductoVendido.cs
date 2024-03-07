@@ -29,13 +29,40 @@ namespace WinForms.ABMFormularios.Formularios_ProdVend
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             string id = txtIdProductoVendido.Text;
-            if (!string.IsNullOrEmpty(id) )
+            if (!string.IsNullOrEmpty(id))
             {
                 int Id = Convert.ToInt32(id);
-                ProductoVendido productoAMostrar = ProductoVendidoService.BuscarProductoVendidoPorId(Id);   
+                ProductoVendido productoAMostrar = ProductoVendidoService.BuscarProductoVendidoPorId(Id);
+                if (productoAMostrar != null)
+                {
+                    txtStock.Text = productoAMostrar.Stock.ToString();
+                    txtIdProducto.Text = productoAMostrar.IdProducto.ToString();
+                    txtIdVenta.Text = productoAMostrar.IdVenta.ToString();
+                }
+                else { MessageBox.Show($"Producto con Id nro {Id} no encontrado..."); }
             }
             else { MessageBox.Show("Ingresar un ID válido."); }
 
+        }
+
+        private void btnAceptar_Click(object sender, EventArgs e)
+        {
+            ProductoVendido productoAModificar = new ProductoVendido()
+            {
+                Id = Convert.ToInt32(txtIdProductoVendido.Text),
+                Stock = Convert.ToInt32(txtStock.Text),
+                IdProducto = Convert.ToInt32(txtIdProducto.Text),
+                IdVenta = Convert.ToInt32(txtIdVenta.Text)
+            };
+
+            bool resultado = ProductoVendidoService.ModificarProductoVendidoPorId(productoAModificar);
+            if (resultado)
+            {
+                MessageBox.Show("Se ha modificado el producto vendido");
+            }
+            else { MessageBox.Show("Ha ocurrido un error, no se pudo modificar el producto vendido"); }
+
+            this.Close();
         }
     }
 }

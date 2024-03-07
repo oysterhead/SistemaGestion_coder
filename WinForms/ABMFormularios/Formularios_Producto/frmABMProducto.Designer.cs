@@ -45,7 +45,6 @@
             txtEliminarProducto.Name = "txtEliminarProducto";
             txtEliminarProducto.Size = new Size(97, 23);
             txtEliminarProducto.TabIndex = 15;
-            txtEliminarProducto.TextChanged += txtEliminarProducto_TextChanged;
             // 
             // txtBuscarProducto
             // 

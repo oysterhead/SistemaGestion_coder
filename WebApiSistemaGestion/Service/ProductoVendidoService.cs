@@ -33,7 +33,15 @@ namespace WebApiSistemaGestion.Service
         {
             using(CoderContext context = new CoderContext())
             {
-                //ProductoVendido productoAEliminar = context.ProductoVendidos.Include(pv => pv.Ventas).Where(pv => pv.Id == Id);
+                ProductoVendido productoVendidoAEliminar = context.ProductoVendidos.Where(pv => pv.Id == Id).FirstOrDefault();
+                if (productoVendidoAEliminar is not null)
+                {
+                    context.ProductoVendidos.Remove(productoVendidoAEliminar);
+                    context.SaveChanges();
+
+                    return true;
+                }
+                return false;
             }
         }
 
@@ -44,6 +52,17 @@ namespace WebApiSistemaGestion.Service
                 ProductoVendido productoEncontrado = context.ProductoVendidos.Where(pv => pv.Id == Id).FirstOrDefault();
 
                 return productoEncontrado;
+            }
+        }
+
+        public static bool ModificarProductoVendidoPorId(ProductoVendido productoVendido)
+        {
+            using(CoderContext context = new CoderContext())
+            {
+                context.Update(productoVendido);
+                context.SaveChanges();
+
+                return true;
             }
         }
     }

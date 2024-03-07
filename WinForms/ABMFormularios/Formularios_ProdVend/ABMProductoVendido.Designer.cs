@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            txtEliminarUsuario = new TextBox();
-            txtBuscarUsuario = new TextBox();
+            txtEliminarProductoVendido = new TextBox();
+            txtBuscarProductoVendido = new TextBox();
             btnEliminarProductoVendido = new Button();
             btnBuscarUnProductoVendido = new Button();
             btnModificarProductoVendido = new Button();
@@ -39,21 +39,21 @@
             ((System.ComponentModel.ISupportInitialize)dgvDatosProductosVendidos).BeginInit();
             SuspendLayout();
             // 
-            // txtEliminarUsuario
+            // txtEliminarProductoVendido
             // 
-            txtEliminarUsuario.Location = new Point(644, 62);
-            txtEliminarUsuario.Name = "txtEliminarUsuario";
-            txtEliminarUsuario.PlaceholderText = "Id Producto Vendido A Eliminar";
-            txtEliminarUsuario.Size = new Size(118, 23);
-            txtEliminarUsuario.TabIndex = 15;
+            txtEliminarProductoVendido.Location = new Point(644, 62);
+            txtEliminarProductoVendido.Name = "txtEliminarProductoVendido";
+            txtEliminarProductoVendido.PlaceholderText = "Id Producto Vendido A Eliminar";
+            txtEliminarProductoVendido.Size = new Size(118, 23);
+            txtEliminarProductoVendido.TabIndex = 15;
             // 
-            // txtBuscarUsuario
+            // txtBuscarProductoVendido
             // 
-            txtBuscarUsuario.Location = new Point(444, 62);
-            txtBuscarUsuario.Name = "txtBuscarUsuario";
-            txtBuscarUsuario.PlaceholderText = "Producto Vendido a Buscar";
-            txtBuscarUsuario.Size = new Size(124, 23);
-            txtBuscarUsuario.TabIndex = 14;
+            txtBuscarProductoVendido.Location = new Point(444, 62);
+            txtBuscarProductoVendido.Name = "txtBuscarProductoVendido";
+            txtBuscarProductoVendido.PlaceholderText = "Producto Vendido a Buscar";
+            txtBuscarProductoVendido.Size = new Size(124, 23);
+            txtBuscarProductoVendido.TabIndex = 14;
             // 
             // btnEliminarProductoVendido
             // 
@@ -63,6 +63,7 @@
             btnEliminarProductoVendido.TabIndex = 13;
             btnEliminarProductoVendido.Text = "Eliminar Producto Vendido";
             btnEliminarProductoVendido.UseVisualStyleBackColor = true;
+            btnEliminarProductoVendido.Click += btnEliminarProductoVendido_Click;
             // 
             // btnBuscarUnProductoVendido
             // 
@@ -72,6 +73,7 @@
             btnBuscarUnProductoVendido.TabIndex = 12;
             btnBuscarUnProductoVendido.Text = "Buscar Producto Vendido";
             btnBuscarUnProductoVendido.UseVisualStyleBackColor = true;
+            btnBuscarUnProductoVendido.Click += btnBuscarUnProductoVendido_Click;
             // 
             // btnModificarProductoVendido
             // 
@@ -120,8 +122,8 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(txtEliminarUsuario);
-            Controls.Add(txtBuscarUsuario);
+            Controls.Add(txtEliminarProductoVendido);
+            Controls.Add(txtBuscarProductoVendido);
             Controls.Add(btnEliminarProductoVendido);
             Controls.Add(btnBuscarUnProductoVendido);
             Controls.Add(btnModificarProductoVendido);
@@ -137,8 +139,8 @@
 
         #endregion
 
-        private TextBox txtEliminarUsuario;
-        private TextBox txtBuscarUsuario;
+        private TextBox txtEliminarProductoVendido;
+        private TextBox txtBuscarProductoVendido;
         private Button btnEliminarProductoVendido;
         private Button btnBuscarUnProductoVendido;
         private Button btnModificarProductoVendido;

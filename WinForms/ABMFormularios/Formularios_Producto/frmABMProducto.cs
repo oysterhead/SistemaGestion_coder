@@ -61,11 +61,6 @@ namespace WinForms.ABMFormularios.Formularios_Producto
 
         }
 
-        private void txtEliminarProducto_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnEliminarProducto_Click(object sender, EventArgs e)
         {
             List<Producto> productos = ProductoService.ListarProductos();

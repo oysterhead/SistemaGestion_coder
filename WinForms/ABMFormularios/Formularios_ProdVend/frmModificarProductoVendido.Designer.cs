@@ -134,6 +134,7 @@
             btnAceptar.TabIndex = 27;
             btnAceptar.Text = "ACEPTAR";
             btnAceptar.UseVisualStyleBackColor = true;
+            btnAceptar.Click += btnAceptar_Click;
             // 
             // frmModificarProductoVendido
             // 
