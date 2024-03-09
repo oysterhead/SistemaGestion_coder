@@ -6,12 +6,6 @@ namespace WebApiSistemaGestion.Service
 {
     public static class UsuarioService
     {
-        /*
-         Usuario Services será la capa que se encargará de gestionar el ABM correspondiente del usuario.
-
-        TODO -> Refactorizar las partes de try catch ya que siempre hago lo mismo, solo cambia la acción sobre la base
-        Se podría hacer un context.+"accion"
-         */
 
         public static string AgregarUsuario(Usuario usuario)
         {

@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using WebApiSistemaGestion.Database;
+
 namespace WebApiSistemaGestion
 {
     public class Program
@@ -12,6 +15,8 @@ namespace WebApiSistemaGestion
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<CoderContext>(options => options.UseSqlServer("Server=.;Database=coderhouse;Trusted_Connection=True;"));
 
             var app = builder.Build();
 
