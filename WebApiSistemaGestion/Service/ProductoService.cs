@@ -4,7 +4,7 @@ using WebApiSistemaGestion.Models;
 
 namespace WebApiSistemaGestion.Service
 {
-    public static class ProductoService
+    public class ProductoService
     {
         public static bool EliminarProducto(int Id)
         {

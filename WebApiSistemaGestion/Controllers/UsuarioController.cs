@@ -9,16 +9,21 @@ namespace WebApiSistemaGestion.Controllers
     [Route("api/[controller]")]
     public class UsuarioController : Controller
     {
-        private CoderContext context;
+        private UsuarioService usuarioService;
 
-        public UsuarioController(CoderContext coderContext)
+        public UsuarioController(UsuarioService usuarioService)
         {
-            this.context = coderContext;
+            this.usuarioService = usuarioService;
         }
-        [HttpGet]
+        [HttpGet("listarusuarios")]
         public List<Usuario> ObtenerListaDeUsuarios()
         {
-            return this.context.Usuarios.ToList();
+            return this.usuarioService.ObtenerTodosLosUsuarios();
+
+        }
+        [HttpGet("listarusuario/{id}")]
+        public ActionResult<string> ObtenerUsuarioPorId(int id)
+        {
 
         }
     }

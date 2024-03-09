@@ -4,8 +4,13 @@ using WebApiSistemaGestion.Models;
 
 namespace WebApiSistemaGestion.Service
 {
-    public static class UsuarioService
+    public class UsuarioService
     {
+        private CoderContext context;
+        public UsuarioService(CoderContext context)
+        {
+            this.context = context;
+        }
 
         public static string AgregarUsuario(Usuario usuario)
         {
@@ -81,14 +86,10 @@ namespace WebApiSistemaGestion.Service
             }
         }
 
-        public static List<Usuario> ObtenerTodosLosUsuarios()
+        public List<Usuario> ObtenerTodosLosUsuarios()
         {
-            using(CoderContext context = new CoderContext())
-            {
-                List<Usuario> usuarios = context.Usuarios.ToList();
-
-                return usuarios;
-            }
+            List<Usuario> todosLosUsuarios = context.Usuarios.ToList();
+            return todosLosUsuarios;
         }
 
         public static Usuario ObtenerUsuarioPorId(int Id)

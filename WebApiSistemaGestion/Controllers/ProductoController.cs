@@ -2,11 +2,14 @@
 
 namespace WebApiSistemaGestion.Controllers
 {
+    [ApiController]
+    [Route("api/controller")]
     public class ProductoController : Controller
     {
-        public IActionResult Index()
+        [HttpGet]
+        public ActionResult<string> Index()
         {
-            return View();
+            return "Productos!";
         }
     }
 }
