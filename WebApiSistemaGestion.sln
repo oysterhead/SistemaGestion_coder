@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiSistemaGestion", "WebApiSistemaGestion\WebApiSistemaGestion.csproj", "{C861BD60-E1CB-4EA4-AFF0-4FE9C8F4BFB3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinForms", "WinForms\WinForms.csproj", "{16F6C769-910F-49A1-8731-8C2EB48ABC40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiSistemaGestion", "WebApiSistemaGestion\WebApiSistemaGestion.csproj", "{C861BD60-E1CB-4EA4-AFF0-4FE9C8F4BFB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		{C861BD60-E1CB-4EA4-AFF0-4FE9C8F4BFB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C861BD60-E1CB-4EA4-AFF0-4FE9C8F4BFB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C861BD60-E1CB-4EA4-AFF0-4FE9C8F4BFB3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{16F6C769-910F-49A1-8731-8C2EB48ABC40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16F6C769-910F-49A1-8731-8C2EB48ABC40}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{16F6C769-910F-49A1-8731-8C2EB48ABC40}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16F6C769-910F-49A1-8731-8C2EB48ABC40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -21,10 +21,10 @@ namespace WebApiSistemaGestion.Controllers
             return this.usuarioService.ObtenerTodosLosUsuarios();
 
         }
-        [HttpGet("listarusuario/{id}")]
-        public ActionResult<string> ObtenerUsuarioPorId(int id)
-        {
-
-        }
+        //[HttpGet("listarusuario/{id}")]
+        //public ActionResult<string> ObtenerUsuarioPorId(int id)
+        //{
+            
+        //}
     }
 }

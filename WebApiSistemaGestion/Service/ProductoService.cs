@@ -1,31 +1,34 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApiSistemaGestion.Database;
+using WebApiSistemaGestion.DTOs;
+using WebApiSistemaGestion.Mapper;
 using WebApiSistemaGestion.Models;
 
 namespace WebApiSistemaGestion.Service
 {
     public class ProductoService
     {
-        public static bool EliminarProducto(int Id)
-        {
-            using (CoderContext context = new CoderContext())
-            {
-                Producto productoAEliminar = context.Productos.Include(p => p.ProductoVendidos).Where(p => p.Id == Id).FirstOrDefault();
+        private CoderContext context;
 
-                if (productoAEliminar is not null)
-                {
-                    context.Productos.Remove(productoAEliminar);
-                    context.SaveChanges();
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
+        public ProductoService(CoderContext context)
+        {
+            this.context = context;
         }
 
-        public static List<Producto> ListarProductos()
+        public bool EliminarProducto(int Id)
+        {
+            Producto productoAEliminar = context.Productos.Include(p => p.ProductoVendidos).Where(p => p.Id == Id).FirstOrDefault();
+
+            if (productoAEliminar is not null)
+            {
+                context.Productos.Remove(productoAEliminar);
+                context.SaveChanges();
+                return true;
+            }
+            else { return false; }
+        }
+
+        public List<Producto> ListarProductos()
         {
             using(CoderContext context = new CoderContext())
             {
@@ -36,17 +39,16 @@ namespace WebApiSistemaGestion.Service
             }
         }
 
-        public static bool NuevoProducto(Producto producto)
+        public bool NuevoProducto(ProductoDTO productoDTO)
         {
-            using(CoderContext context = new CoderContext())
-            {
-                context.Productos.Add(producto);
-                context.SaveChanges();
-                return true;
-            }
+            Producto producto = ProductoMapper.MapearAProducto(productoDTO);
+            context.Productos.Add(producto);
+            context.SaveChanges();
+            return true;
+            
         }
 
-        public static Producto BuscarProductoPorId(int Id)
+        public Producto BuscarProductoPorId(int Id)
         {
             using(CoderContext context = new CoderContext())
             {
@@ -57,7 +59,7 @@ namespace WebApiSistemaGestion.Service
             }
         }
 
-        public static bool ModificarProductoPorId(Producto producto, int Id)
+        public bool ModificarProductoPorId(Producto producto, int Id)
         {
             using (CoderContext context = new CoderContext())
             {
