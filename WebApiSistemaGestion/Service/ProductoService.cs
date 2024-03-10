@@ -30,13 +30,10 @@ namespace WebApiSistemaGestion.Service
 
         public List<Producto> ListarProductos()
         {
-            using(CoderContext context = new CoderContext())
-            {
-                List<Producto> listaDeProductos = new List<Producto>();
-                listaDeProductos = context.Productos.ToList();
+            List<Producto> listaDeProductos = new List<Producto>();
+            listaDeProductos = context.Productos.ToList();
 
-                return listaDeProductos;
-            }
+            return listaDeProductos;
         }
 
         public bool NuevoProducto(ProductoDTO productoDTO)
@@ -50,32 +47,26 @@ namespace WebApiSistemaGestion.Service
 
         public Producto BuscarProductoPorId(int Id)
         {
-            using(CoderContext context = new CoderContext())
+            Producto producto = context.Productos.Where(p => p.Id == Id).FirstOrDefault();
+            if(producto is not null)
             {
-                Producto producto = context.Productos.Where(p => p.Id == Id).FirstOrDefault();
-
                 return producto;
-
             }
+            else { return null; }
         }
 
-        public bool ModificarProductoPorId(Producto producto, int Id)
+        public bool ModificarProductoPorId(ProductoDTO productoDTO, int Id)
         {
-            using (CoderContext context = new CoderContext())
+            Producto productoAModificar = context.Productos.Where(p => p.Id == Id).FirstOrDefault();
+            if (productoAModificar is not null)
             {
-                Producto productoAModificar = context.Productos.Where(p => p.Id == Id).FirstOrDefault();
-                if (productoAModificar is not null)
-                {
-                    context.Update(productoAModificar);
-                    context.SaveChanges();
-                    return true;
-                }
-
-                else
-                {
-                    return false;
-                }
+                productoAModificar = ProductoMapper.MapearAProducto(productoDTO);
+                context.Productos.Update(productoAModificar);
+                context.SaveChanges();
+                return true;
             }
+
+            else { return false; }
         }
     }
 }
