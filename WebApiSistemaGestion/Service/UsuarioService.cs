@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApiSistemaGestion.Database;
+using WebApiSistemaGestion.DTOs;
+using WebApiSistemaGestion.Mapper;
 using WebApiSistemaGestion.Models;
 
 namespace WebApiSistemaGestion.Service
@@ -12,57 +14,34 @@ namespace WebApiSistemaGestion.Service
             this.context = context;
         }
 
-        public static string AgregarUsuario(Usuario usuario)
+        public bool AgregarUsuario(UsuarioDTO usuarioDTO)
         {
-            using(CoderContext context = new CoderContext())
+            Usuario usuario = UsuarioMapper.MapearAUsuario(usuarioDTO);
+            try
             {
-                try
-                {
-                    context.Add(usuario);
-                }
-                catch (Exception ex)
-                {
-                    return ex.ToString();
-                }
-
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    return ex.ToString();
-                }
-
-                return "true";
+                context.Add(usuario);
+                context.SaveChanges();
             }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
         }
 
-        public static string ModificarUsuario(Usuario usuario)
+        public bool ModificarUsuario(int Id, UsuarioDTO usuarioDTO)
         {
-            using (CoderContext context = new CoderContext())
+            Usuario usuarioAModificar = context.Usuarios.Where(u => u.Id == Id).FirstOrDefault();
+            if (usuarioAModificar is not null)
             {
-                try
-                {
-                    context.Update(usuario);
-                }
-                catch (Exception ex)
-                {
-                    return ex.ToString();
-                }
-
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    return ex.ToString();
-                }
-
-                return "true";
-
+                usuarioAModificar = UsuarioMapper.MapearAUsuario(usuarioDTO);
+                context.Usuarios.Update(usuarioAModificar);
+                context.SaveChanges();
+                return true;
             }
+
+            else { return false; }
         }
 
         public static string EliminarUsuario(int Id)
@@ -92,14 +71,35 @@ namespace WebApiSistemaGestion.Service
             return todosLosUsuarios;
         }
 
-        public static Usuario ObtenerUsuarioPorId(int Id)
+        public Usuario ObtenerUsuarioPorId(int Id)
         {
-            using(CoderContext context = new CoderContext())
+            Usuario usuarioBuscado = context.Usuarios.Where(u => u.Id == Id).FirstOrDefault();
+            if(usuarioBuscado is not null)
             {
-                Usuario usuarioBuscado = context.Usuarios.Where(u =>u.Id == Id).FirstOrDefault();
-
                 return usuarioBuscado;
             }
+            else { return null; }            
+        }
+
+        public Usuario ObtenerUsuarioPorNombre(string nombreUsuario)
+        {
+            Usuario usuarioBuscado = context.Usuarios.Where(u => u.NombreUsuario == nombreUsuario).FirstOrDefault();
+            if (usuarioBuscado is not null)
+            {
+                return usuarioBuscado;
+            }
+            else { return null; }
+        }
+
+        public Usuario ObtenerUsuarioPorUsuarioYPassword(string usuario, string password)
+        {
+            Usuario usuarioBuscado = context.Usuarios.Where(u => u.NombreUsuario == usuario).FirstOrDefault();
+            usuarioBuscado = context.Usuarios.Where(u => u.Contraseña == password).FirstOrDefault();
+            if (usuarioBuscado is not null)
+            {
+                return usuarioBuscado;
+            }
+            else { return null; }
         }
     }
 }

@@ -68,5 +68,12 @@ namespace WebApiSistemaGestion.Service
 
             else { return false; }
         }
+
+        public List<Producto> ObtenerProductosPorIdUsuario(int IdUsuario)
+        {
+            List<Producto> listaDeProductos = context.Productos.Where(p => p.IdUsuario == IdUsuario).ToList();
+
+            return listaDeProductos;        
+        }
     }
 }
