@@ -23,40 +23,15 @@ namespace WebApiSistemaGestion.Controllers
             return this.usuarioService.ObtenerTodosLosUsuarios();
 
         }
-        [HttpGet("{id}")]
-        public IActionResult ObtenerUsuarioPorId(int id)
+        
+        [HttpGet("{nombreDeUsuario}")]
+        public IActionResult ObtenerUsuarioPorNombre(string nombreDeUsuario)
         {
-            if (id > 0)
+            if (!string.IsNullOrWhiteSpace(nombreDeUsuario))
             {
                 try
                 {
-                    Usuario usuarioBuscado = this.usuarioService.ObtenerUsuarioPorId(id);
-                    if (usuarioBuscado == null)
-                    {
-                        return base.Conflict(new { mensaje = "Usuario no encontrado", status = 400 });
-                    }
-                    UsuarioDTO usuarioBuscadoDTO = UsuarioMapper.MapearADTO(usuarioBuscado);
-                    return base.Ok(usuarioBuscadoDTO);
-
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(new { mensaje = $"Ha ocurrido un error {ex.Message}", status = 400 });
-                }
-            }
-            else
-            {
-                return base.Conflict(new { mensaje = "El id debe ser positivo", status = 409 });
-            }
-        }
-        [HttpGet("{nombreUsuario}")]
-        public IActionResult ObtenerUsuarioPorNombre(string nombreUsuario)
-        {
-            if (!string.IsNullOrEmpty(nombreUsuario))
-            {
-                try
-                {
-                    Usuario usuarioBuscado = this.usuarioService.ObtenerUsuarioPorNombre(nombreUsuario);
+                    Usuario usuarioBuscado = this.usuarioService.ObtenerUsuarioPorNombre(nombreDeUsuario);
                     if (usuarioBuscado == null) 
                     {
                         return base.Conflict(new { mensaje = "Usuario no encontrado", status = 400 });
@@ -70,10 +45,7 @@ namespace WebApiSistemaGestion.Controllers
                     return BadRequest(new { mensaje = $"Ha ocurrido un error {ex.Message}", status = 400 });
                 }
             }
-            else
-            {
-                return base.Conflict(new { mensaje = "El id debe ser positivo", status = 409 });
-            }
+            else { return base.BadRequest(new { mensaje = "El nombre de usuario no puede ser vacio." }); }
         }
 
         [HttpGet("{usuario}/{password}")]
@@ -84,10 +56,7 @@ namespace WebApiSistemaGestion.Controllers
             {
                 return base.Conflict(new { mensaje = "Usuario no encontrado", status = 400 });
             }
-            else
-            {
-                return base.Conflict(new { mensaje = "El id debe ser positivo", status = 409 });
-            }
+            
             UsuarioDTO usuarioBuscadoDTO = UsuarioMapper.MapearADTO(usuarioBuscado);
             return base.Ok(usuarioBuscadoDTO);
         }

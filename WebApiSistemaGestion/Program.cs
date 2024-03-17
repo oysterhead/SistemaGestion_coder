@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using WebApiSistemaGestion.Database;
 using WebApiSistemaGestion.Service;
 
@@ -20,6 +21,15 @@ namespace WebApiSistemaGestion
             builder.Services.AddScoped<ProductoService>();
             builder.Services.AddScoped<VentaService>();
             builder.Services.AddScoped<ProductoVendidoService>();
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyMethod();
+                    policy.AllowAnyOrigin();
+                    policy.AllowAnyHeader();
+                });
+            });
 
             builder.Services.AddDbContext<CoderContext>(options => options.UseSqlServer("Server=.;Database=coderhouse;Trusted_Connection=True;"));
 
@@ -32,6 +42,7 @@ namespace WebApiSistemaGestion
                 app.UseSwaggerUI();
             }
 
+            app.UseCors();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
