@@ -71,9 +71,13 @@ namespace WebApiSistemaGestion.Service
 
         public List<Producto> ObtenerProductosPorIdUsuario(int IdUsuario)
         {
-            List<Producto> listaDeProductos = context.Productos.Where(p => p.IdUsuario == IdUsuario).ToList();
-
-            return listaDeProductos;        
+             List<Producto> listaDeProductos = context.Productos.Where(p => p.IdUsuario == IdUsuario).ToList();
+             if (listaDeProductos.Count > 0)
+             {
+                 return listaDeProductos;
+             }
+            
+             else { return null ; }        
         }
     }
 }

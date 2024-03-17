@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Constraints;
+using WebApiSistemaGestion.Database;
 using WebApiSistemaGestion.DTOs;
 using WebApiSistemaGestion.Mapper;
 using WebApiSistemaGestion.Models;
@@ -12,6 +13,7 @@ namespace WebApiSistemaGestion.Controllers
     public class ProductoController : Controller
     {
         private ProductoService productoService;
+
         public ProductoController(ProductoService productoService)
         {
             this.productoService = productoService;
@@ -112,14 +114,19 @@ namespace WebApiSistemaGestion.Controllers
                 try
                 {
                     List<Producto> productos = productoService.ObtenerProductosPorIdUsuario(IdUsuario);
+                    if (productos == null)
+                    {
+                        throw new Exception ($"usuario con Id {IdUsuario} no tiene cargados productos o no existe");
+                    }
+
                     List<ProductoDTO> productosDTO = new List<ProductoDTO>();
                     foreach (Producto producto in productos)
                     {
-                        ProductoDTO productoDTO = ProductoMapper.MapearADTO(producto);
-                        productosDTO.Add(productoDTO);
+                      ProductoDTO productoDTO = ProductoMapper.MapearADTO(producto);
+                      productosDTO.Add(productoDTO);
                     }
                     return base.Ok(new { productosDTO, status = 200 });
-
+                    
                 }
                 catch (Exception ex)
                 {

@@ -1,12 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApiSistemaGestion.Database;
+using WebApiSistemaGestion.Service;
 
 namespace WebApiSistemaGestion.Controllers
 {
+    [ApiController]
+    [Route("/api/[controller]")]
     public class VentaController : Controller
     {
-        public IActionResult Index()
+
+        private VentaService ventaService;
+        public VentaController(VentaService ventaService)
         {
-            return View();
+            this.ventaService = ventaService;
+        }
+
+        [HttpPut("{IdUsuario}")]
+        public IActionResult CrearVentaDelUsuario(int IdUsuario)
+        {
+        
         }
     }
 }

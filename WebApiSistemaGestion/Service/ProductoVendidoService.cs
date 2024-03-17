@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using WebApiSistemaGestion.Database;
 using WebApiSistemaGestion.Models;
 
@@ -6,6 +7,13 @@ namespace WebApiSistemaGestion.Service
 {
     public class ProductoVendidoService
     {
+
+        private CoderContext context;
+
+        public ProductoVendidoService(CoderContext context)
+        {
+            this.context = context;
+        }
         public static List<ProductoVendido> ListarProductosVendidos()
         {
             using(CoderContext context = new CoderContext())
@@ -63,6 +71,17 @@ namespace WebApiSistemaGestion.Service
                 context.SaveChanges();
 
                 return true;
+            }
+        }
+
+        public List<ProductoVendido> BuscarProductosDelUsuario (int IdUsuario)
+        {
+            var buscarUsuario = context.ProductoVendidos.Include(pv => pv.IdVenta==IdUsuario).Where()
+                Venta.Include(v => v.IdUsuario == IdUsuario).Where()
+                Where(u => u.Id == IdUsuario).ToList();
+            if(buscarUsuario.Count > 0)
+            {
+                
             }
         }
     }
