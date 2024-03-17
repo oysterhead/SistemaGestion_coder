@@ -74,15 +74,12 @@ namespace WebApiSistemaGestion.Service
             }
         }
 
-        public List<ProductoVendido> BuscarProductosDelUsuario (int IdUsuario)
+        public List<ProductoVendido> BuscarProductosDelUsuario(Usuario usuario)
         {
-            var buscarUsuario = context.ProductoVendidos.Include(pv => pv.IdVenta==IdUsuario).Where()
-                Venta.Include(v => v.IdUsuario == IdUsuario).Where()
-                Where(u => u.Id == IdUsuario).ToList();
-            if(buscarUsuario.Count > 0)
-            {
-                
-            }
+            return this.context.Venta
+                .Where(v => v.IdUsuario == usuario.Id)
+                .SelectMany(v => v.ProductoVendidos)
+                .ToList();
         }
     }
 }

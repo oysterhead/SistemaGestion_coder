@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApiSistemaGestion.DTOs;
+using WebApiSistemaGestion.Mapper;
+using WebApiSistemaGestion.Models;
 using WebApiSistemaGestion.Service;
 
 namespace WebApiSistemaGestion.Controllers
@@ -8,19 +11,36 @@ namespace WebApiSistemaGestion.Controllers
     public class ProductoVendidoController : Controller
     {
         private ProductoVendidoService productoVendidoService;
-        public ProductoVendidoController(ProductoVendidoService productoVendidoService)
+        readonly UsuarioService usuarioService;
+
+        public ProductoVendidoController(
+            ProductoVendidoService productoVendidoService,
+            UsuarioService usuarioService)
         {
             this.productoVendidoService = productoVendidoService;
+            this.usuarioService = usuarioService;
         }
 
         [HttpGet("{IdUsuario}")]
         public IActionResult ProductosVendidosPorUsuario(int IdUsuario)
         {
-            if (IdUsuario > 0)
+            Usuario usuario = this.usuarioService.ObtenerUsuarioPorId(IdUsuario);
+
+            if (usuario == null)
             {
-                ProductoVendidoService productoVendidoService = this.productoVendidoService.BuscarProductosDelUsuario(IdUsuario);
+                return NotFound("Usuario no encontrado");
             }
-            else { return base.Conflict(new { mensaje = "El id debe ser positivo", status = 409 }); }
+
+            List<ProductoVendido> productosVendidos = this.productoVendidoService.BuscarProductosDelUsuario(usuario);
+
+            List<ProductoVendidoDTO> productosVendidosDTO = new List<ProductoVendidoDTO>(productosVendidos.Count);
+
+            foreach (ProductoVendido productoVendido in productosVendidos)
+            {
+                productosVendidosDTO.Add(ProductoVendidoMapper.MapearADTO(productoVendido));
+            }
+
+            return Ok(productosVendidosDTO);
         }
     }
 }

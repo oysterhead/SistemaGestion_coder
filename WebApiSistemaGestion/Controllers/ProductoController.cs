@@ -13,10 +13,12 @@ namespace WebApiSistemaGestion.Controllers
     public class ProductoController : Controller
     {
         private ProductoService productoService;
+        readonly UsuarioService usuarioService;
 
-        public ProductoController(ProductoService productoService)
+        public ProductoController(ProductoService productoService, UsuarioService usuarioService)
         {
             this.productoService = productoService;
+            this.usuarioService = usuarioService;
         }
 
         [HttpPost]
@@ -113,10 +115,17 @@ namespace WebApiSistemaGestion.Controllers
             {
                 try
                 {
+                    Usuario usuario = this.usuarioService.ObtenerUsuarioPorId(IdUsuario);
+
+                    if (usuario == null)
+                    {
+                        return NotFound("Usuario no encontrado");
+                    }
+
                     List<Producto> productos = productoService.ObtenerProductosPorIdUsuario(IdUsuario);
                     if (productos == null)
                     {
-                        throw new Exception ($"usuario con Id {IdUsuario} no tiene cargados productos o no existe");
+                        throw new Exception ($"El usuario {IdUsuario} no tiene productos");
                     }
 
                     List<ProductoDTO> productosDTO = new List<ProductoDTO>();
@@ -130,7 +139,7 @@ namespace WebApiSistemaGestion.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return base.BadRequest(new { mensaje = $"Ha ocurrido un error {ex.Message}", status = 400 });
+                    return base.BadRequest(new { mensaje = $"{ex.Message}", status = 400 });
                 }
             }
             else

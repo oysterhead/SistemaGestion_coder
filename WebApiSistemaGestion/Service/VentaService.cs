@@ -1,18 +1,30 @@
 ﻿using WebApiSistemaGestion.Database;
+using WebApiSistemaGestion.DTOs;
+using WebApiSistemaGestion.Mapper;
 using WebApiSistemaGestion.Models;
 
 namespace WebApiSistemaGestion.Service
 {
     public class VentaService
     {
-        public static bool NuevaVenta(Venta venta)
+        private CoderContext context;
+
+        public VentaService(CoderContext context)
         {
-            using(CoderContext context = new CoderContext())
+            this.context = context;
+        }
+
+        public bool NuevaVenta(VentaDTO ventaDTO)
+        {
+            Venta nuevaVenta = VentaMapper.MapearAVenta(ventaDTO);
+            try
             {
-                context.Add(venta);
+                context.Add(nuevaVenta);
                 context.SaveChanges();
-                return true;
             }
+            catch (Exception ex) { return false; }
+
+            return true;
         }
 
         public static List<Venta> ListarTodasLasVentas()
@@ -24,14 +36,11 @@ namespace WebApiSistemaGestion.Service
             }
         }
 
-        public static Venta ObtenerVentaPorId (int Id)
+        public Venta ObtenerVentaPorId (int Id)
         {
-            using(CoderContext context = new CoderContext())
-            {
-                Venta ventaBuscada = context.Venta.Where(v  => v.Id == Id).FirstOrDefault();
-                return ventaBuscada;
+            Venta ventaBuscada = context.Venta.Where(v  => v.Id == Id).FirstOrDefault();
+            return ventaBuscada;
 
-            }
         }
 
         public static bool ModificarVentaPorId(Venta venta, int Id)
@@ -69,6 +78,12 @@ namespace WebApiSistemaGestion.Service
 
                 else { return false; }
             }
+        }
+
+        public List<Venta> ObtenerVentasDelUsuario(int IdUsuario)
+        {
+            List<Venta> ventasBuscadas = context.Venta.Where(v => v.IdUsuario == IdUsuario).ToList();
+            return ventasBuscadas;
         }
     }
 }
