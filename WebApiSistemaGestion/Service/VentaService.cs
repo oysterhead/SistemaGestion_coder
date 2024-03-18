@@ -8,21 +8,32 @@ namespace WebApiSistemaGestion.Service
     public class VentaService
     {
         private CoderContext context;
+        readonly ProductoVendidoService productoVendidoService;
+        readonly ProductoService productoService;
 
-        public VentaService(CoderContext context)
+        public VentaService(CoderContext context, ProductoVendidoService productoVendidoService)
         {
             this.context = context;
+            this.productoVendidoService = productoVendidoService;
+            this.productoService = productoService;
         }
 
-        public bool NuevaVenta(VentaDTO ventaDTO)
+        public bool NuevaVenta(int IdUsuario, List<ProductoDTO> productoDTO)
         {
-            Venta nuevaVenta = VentaMapper.MapearAVenta(ventaDTO);
+            Venta nuevaVenta = new Venta();
+            List<string> nombreDeProductos = productoDTO.Select(p => p.Descripciones).ToList();
+            string comentarios = string.Join(", ", nombreDeProductos);
+            nuevaVenta.Comentarios = comentarios;
+            nuevaVenta.IdUsuario = IdUsuario;
+
             try
             {
                 context.Add(nuevaVenta);
                 context.SaveChanges();
             }
             catch (Exception ex) { return false; }
+            this.MarcarComoProductosVendidos(productoDTO, nuevaVenta.Id);
+            this.ActualizarStockDeLosProductosVendidos(productoDTO);
 
             return true;
         }
@@ -84,6 +95,33 @@ namespace WebApiSistemaGestion.Service
         {
             List<Venta> ventasBuscadas = context.Venta.Where(v => v.IdUsuario == IdUsuario).ToList();
             return ventasBuscadas;
+        }
+
+        private void MarcarComoProductosVendidos(List<ProductoDTO> productoDTO, int IdVenta)
+        {
+            productoDTO.ForEach(p =>
+            {
+                ProductoVendidoDTO productoVendidoDTO = new ProductoVendidoDTO();
+                productoVendidoDTO.IdProducto = p.Id;
+                productoVendidoDTO.IdVenta = IdVenta;
+                productoVendidoDTO.Stock = p.Stock;
+
+                this.productoVendidoService.NuevoProductoVendido(productoVendidoDTO);
+            });
+        }
+        private void ActualizarStockDeLosProductosVendidos (List<ProductoDTO> productoDTO)
+        {
+            List<Producto> productos = new List<Producto>();
+
+            productoDTO.ForEach(p => 
+            {
+                Producto productoActual = ProductoMapper.MapearAProducto(p);
+                productoActual = this.productoService.BuscarProductoPorId(p.Id);
+                productoActual.Stock -= p.Stock;
+                ProductoDTO nuevoProductoDTOMenosStock = ProductoMapper.MapearADTO(productoActual);
+                this.productoService.ModificarProductoPorId(nuevoProductoDTOMenosStock, productoActual.Id);
+
+            });
         }
     }
 }

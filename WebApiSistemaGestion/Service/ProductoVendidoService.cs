@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using WebApiSistemaGestion.Database;
+using WebApiSistemaGestion.DTOs;
+using WebApiSistemaGestion.Mapper;
 using WebApiSistemaGestion.Models;
 
 namespace WebApiSistemaGestion.Service
@@ -9,6 +11,7 @@ namespace WebApiSistemaGestion.Service
     {
 
         private CoderContext context;
+
 
         public ProductoVendidoService(CoderContext context)
         {
@@ -26,15 +29,14 @@ namespace WebApiSistemaGestion.Service
             }
         }
 
-        public static bool NuevoProductoVendido (ProductoVendido vendido)
+        public bool NuevoProductoVendido (ProductoVendidoDTO productoVendidoDTO)
         {
-            using(CoderContext context = new CoderContext())
-            {
-                context.ProductoVendidos.Add(vendido);
-                context.SaveChanges();
+            ProductoVendido productoVendido = ProductoVendidoMapper.MapearAProductoVendido(productoVendidoDTO);
+            context.ProductoVendidos.Add(productoVendido);
+            context.SaveChanges();
 
-                return true;
-            }
+            return true;
+
         }
 
         public static bool EliminarProductoVendidoPorId (int Id)

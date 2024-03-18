@@ -31,15 +31,15 @@ namespace WebApiSistemaGestion.Controllers
             else { return base.Conflict(new { mensaje = "Ha ocurrido un problema al agregar un usuario", status = 200 }); }
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult BorrarProducto(int id)
+        [HttpDelete("{IdProducto}")]
+        public IActionResult BorrarProducto(int IdProducto)
         {
-            if (id > 0)
+            if (IdProducto > 0)
             {
                 try
                 {
-                    this.productoService.EliminarProducto(id);
-                    return base.Ok(new { mensaje = $"Producto con Id {id} eliminado con éxito", status = 200 });
+                    this.productoService.EliminarProducto(IdProducto);
+                    return base.Ok(new { mensaje = $"Producto con Id {IdProducto} eliminado con éxito", status = 200 });
 
                 }
                 catch (Exception ex)
@@ -74,39 +74,39 @@ namespace WebApiSistemaGestion.Controllers
             }
         }
 
-        [HttpGet("Productos")]
-        public IActionResult ListarProductos()
-        {
-            List<Producto> productos = productoService.ListarProductos();
-            if (productos.Count > 0)
-            {
-                return Ok(new { mensaje = "Productos Existentes", status = 200, productos });
-            }
-            else { return base.Conflict(new { mensaje = "Ha ocurrido un problema.", status = 400 }); }
-        }
+        //[HttpGet("Productos")]
+        //public IActionResult ListarProductos()
+        //{
+        //    List<Producto> productos = productoService.ListarProductos();
+        //    if (productos.Count > 0)
+        //    {
+        //        return Ok(new { mensaje = "Productos Existentes", status = 200, productos });
+        //    }
+        //    else { return base.Conflict(new { mensaje = "Ha ocurrido un problema.", status = 400 }); }
+        //}
 
-        [HttpGet("Producto/{id}")]
-        public IActionResult ListarProductoPorId(int id)
-        {
-            if (id > 0)
-            {
-                try
-                {
-                    Producto productoBuscado = this.productoService.BuscarProductoPorId(id);
-                    ProductoDTO productoBuscadoDTO = ProductoMapper.MapearADTO(productoBuscado);
-                    return base.Ok(productoBuscadoDTO);
+        //[HttpGet("Producto/{id}")]
+        //public IActionResult ListarProductoPorId(int id)
+        //{
+        //    if (id > 0)
+        //    {
+        //        try
+        //        {
+        //            Producto productoBuscado = this.productoService.BuscarProductoPorId(id);
+        //            ProductoDTO productoBuscadoDTO = ProductoMapper.MapearADTO(productoBuscado);
+        //            return base.Ok(productoBuscadoDTO);
 
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(new { mensaje = $"Ha ocurrido un error {ex.Message}", status = 400 });
-                }
-            }
-            else
-            {
-                return base.Conflict(new { mensaje = "El id debe ser positivo", status = 409 });
-            }
-        }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            return BadRequest(new { mensaje = $"Ha ocurrido un error {ex.Message}", status = 400 });
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return base.Conflict(new { mensaje = "El id debe ser positivo", status = 409 });
+        //    }
+        //}
 
         [HttpGet("{IdUsuario}")]
         public IActionResult ObtenerProductosPorIdUsuario(int IdUsuario)

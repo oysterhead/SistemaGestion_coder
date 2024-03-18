@@ -93,11 +93,11 @@ namespace WebApiSistemaGestion.Service
 
         public Usuario ObtenerUsuarioPorUsuarioYPassword(string usuario, string password)
         {
-            Usuario usuarioBuscado = context.Usuarios.Where(u => u.NombreUsuario == usuario).FirstOrDefault();
-            usuarioBuscado = context.Usuarios.Where(u => u.Contraseña == password).FirstOrDefault();
-            if (usuarioBuscado is not null)
+            Usuario usuario1= context.Usuarios.Where(u => u.NombreUsuario == usuario).FirstOrDefault();
+            usuario1 = context.Usuarios.Where(u => u.Contraseña == password).FirstOrDefault();
+            if (usuario1 is not null)
             {
-                return usuarioBuscado;
+                return usuario1;
             }
             else { return null; }
         }

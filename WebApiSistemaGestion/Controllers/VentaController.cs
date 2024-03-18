@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Eventing.Reader;
+using System.Net;
 using WebApiSistemaGestion.Database;
 using WebApiSistemaGestion.DTOs;
 using WebApiSistemaGestion.Mapper;
@@ -21,9 +23,9 @@ namespace WebApiSistemaGestion.Controllers
         }
 
         [HttpPost("{IdUsuario}")]
-        public IActionResult CrearVentaDelUsuario(int IdUsuario, [FromBody] VentaDTO ventaDTO)
+        public IActionResult CrearVentaDelUsuario(int IdUsuario, [FromBody] List<ProductoDTO> productoDTO)
         {
-            if (IdUsuario > 0) 
+            if (IdUsuario > 0)
             {
                 Usuario usuario = this.usuarioService.ObtenerUsuarioPorId(IdUsuario);
 
@@ -32,19 +34,26 @@ namespace WebApiSistemaGestion.Controllers
                     return NotFound("Usuario no encontrado");
                 }
 
-                if (this.ventaService.NuevaVenta(ventaDTO))
+                if (productoDTO.Count == 0)
                 {
-                    return base.Ok(new { mensaje = "Venta resgistrada exitosamente", status = 200, ventaDTO });
+                    return base.BadRequest(new { mensaje = "No se recibieron productos necesarios para la venta", status = HttpStatusCode.BadRequest });
                 }
-                    
-                else { return base.Conflict(new { mensaje = "Ha ocurrido un problema al agregar una venta", status = 200 }); }
+                try
+                {
+                    this.ventaService.NuevaVenta(IdUsuario, productoDTO);
+                    IActionResult result = base.Created(nameof(CrearVentaDelUsuario), new
+                    {
+                        mensaje = "Venta realizada con éxito",
+                        status = HttpStatusCode.Created,
+                        nuevaVenta = productoDTO
+                    });
+                    return result;
+                }
+                catch (Exception ex) { return base.Conflict(new { mensaje = ex.Message, status = HttpStatusCode.Conflict }); }
             }
-            else
-            {
-                return base.Conflict(new { mensaje = "El id debe ser positivo", status = 409 });
-            }
-
+            else { return base.Conflict(new { mensaje = "El Id de usuario no puede ser negativo", status = HttpStatusCode.Conflict }); }
         }
+         
 
         [HttpGet("{IdUsuario}")]
         public IActionResult MostrarVentaDelUsuario(int IdUsuario)
